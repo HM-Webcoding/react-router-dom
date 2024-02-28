@@ -9,6 +9,7 @@ import {
   createContactAction,
   deleteContactAction,
   editContactAction,
+  favouriteContactAction,
 } from "./actions/contactsActions";
 import "./index.css";
 import { getContactLoader, getContactsLoader } from "./loaders/contactsLoader";
@@ -22,19 +23,25 @@ const router = createBrowserRouter([
     action: createContactAction,
     children: [
       {
-        path: "contacts/:contactId",
-        element: <Contact />,
-        loader: getContactLoader,
-      },
-      {
-        path: "contacts/:contactId/edit",
-        element: <EditContact />,
-        loader: getContactLoader,
-        action: editContactAction,
-      },
-      {
-        path: "contacts/:contactId/destroy",
-        action: deleteContactAction,
+        errorElement: <ErrorPage />,
+        children: [
+          {
+            path: "contacts/:contactId",
+            element: <Contact />,
+            loader: getContactLoader,
+            action: favouriteContactAction,
+          },
+          {
+            path: "contacts/:contactId/edit",
+            element: <EditContact />,
+            loader: getContactLoader,
+            action: editContactAction,
+          },
+          {
+            path: "contacts/:contactId/destroy",
+            action: deleteContactAction,
+          },
+        ],
       },
     ],
   },
